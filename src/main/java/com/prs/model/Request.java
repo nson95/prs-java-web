@@ -17,6 +17,7 @@ public class Request {
 	private User user;
 	private String requestNumber;
 	private String description;
+	private String justification;
 	private LocalDate dateNeeded;
 	private String deliveryMode;
 	private String status;
@@ -33,6 +34,13 @@ public class Request {
 		return id;
 	}
 
+	public String getJustification() {
+		return justification;
+	}
+	
+	public void setJustification(String justification) {
+		this.justification = justification;
+	}
 	public void setId(int id) {
 		this.id = id;
 	}
