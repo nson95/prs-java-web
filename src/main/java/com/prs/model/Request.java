@@ -25,6 +25,31 @@ public class Request {
 	private LocalDateTime submittedDate;
 	private String reasonForRejection;
 	
+	
+	public Request() {
+		super();
+	}
+	
+	
+
+	public Request(User user, String requestNumber, String description, String justification,
+			LocalDate dateNeeded, String deliveryMode, String status, double total, LocalDateTime submittedDate,
+			String reasonForRejection) {
+		super();
+		this.user = user;
+		this.requestNumber = requestNumber;
+		this.description = description;
+		this.justification = justification;
+		this.dateNeeded = dateNeeded;
+		this.deliveryMode = deliveryMode;
+		this.status = status;
+		this.total = total;
+		this.submittedDate = submittedDate;
+		this.reasonForRejection = reasonForRejection;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Product []";

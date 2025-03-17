@@ -47,7 +47,9 @@ public class LineItemController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error, id in path and body do not match");
 		}
 		else if (lineItemRepo.existsById(id)) {
+			int reqId = lineItemRepo.findById(id).get().getRequest().getId();
 			lineItemRepo.save(lineitem);
+			recalculateLineItemTotal(reqId);
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error, no lineitem for id " + id);
 		}

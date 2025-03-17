@@ -40,12 +40,13 @@ public class VendorController {
 	}
 	
 	@PutMapping("/{id}")
-	public void update(@PathVariable int id, @RequestBody Vendor vendor) {
+	public Vendor update(@PathVariable int id, @RequestBody Vendor vendor) {
 		if (id != vendor.getId()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vendor Id mismatch per URL. Id: "+id);
 		}
 		else if (vendorRepo.existsById(id)) {
 			vendorRepo.save(vendor);
+			return vendor;
 		}
 		else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No vendor found for id. Id: "+id);
