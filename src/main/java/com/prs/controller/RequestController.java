@@ -105,7 +105,7 @@ public class RequestController {
 				requestRepo.save(r);
 				return r;
 			} else {
-				r.setStatus("SUBMITTED");
+				r.setStatus("REVIEW");
 				requestRepo.save(r);
 				return r;
 			}
@@ -116,7 +116,7 @@ public class RequestController {
 
 	@GetMapping("/list-review/{id}")
 	public List<Request> listForReview(@PathVariable int id) {
-		List<Request> allRequests = requestRepo.findByStatus("SUBMITTED");
+		List<Request> allRequests = requestRepo.findByStatus("REVIEW");
 		List<Request> reqForReview = allRequests.stream()
 											   .filter(request -> !(request.getUser().getId() == id))
 											   .collect(Collectors.toList());

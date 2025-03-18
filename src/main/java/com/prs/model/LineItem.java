@@ -15,7 +15,6 @@ public class LineItem {
 	private Product product;
 	private int quantity;
 	
-	
 	public LineItem() {
 		super();
 	}
