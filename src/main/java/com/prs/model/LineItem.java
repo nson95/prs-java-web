@@ -15,6 +15,18 @@ public class LineItem {
 	private Product product;
 	private int quantity;
 	
+	
+	public LineItem() {
+		super();
+	}
+	
+	public LineItem(Request request, Product product, int quantity) {
+		super();
+		this.request = request;
+		this.product = product;
+		this.quantity = quantity;
+	}
+
 	public int getId() {
 		return id;
 	}

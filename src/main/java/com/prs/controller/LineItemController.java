@@ -17,36 +17,39 @@ import com.prs.model.Request;
 @RestController
 @RequestMapping("/api/lineitems")
 public class LineItemController {
-	
+
 	@Autowired
 	private LineItemRepo lineItemRepo;
-	@Autowired 
+	@Autowired
 	private RequestRepo requestRepo;
-	
+
+	@GetMapping("/")
+	public List<LineItem> getAll() {
+		return lineItemRepo.findAll();
+	}
+
 	@GetMapping("/{id}")
 	public Optional<LineItem> getById(@PathVariable int id) {
 		Optional<LineItem> li = lineItemRepo.findById(id);
 		if (li.isPresent()) {
 			return li;
-		}
-		else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error, no lineitem for id "+id);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error, no lineitem for id " + id);
 		}
 	}
-	
+
 	@PostMapping("")
-	public LineItem add(@RequestBody LineItem lineitem) {
-		LineItem li = lineItemRepo.save(lineitem);
-		recalculateLineItemTotal(lineitem.getRequest().getId());
-		return li;
+	public LineItem add(@RequestBody LineItem lineItem) {
+		lineItemRepo.save(lineItem);
+		recalculateLineItemTotal(lineItem.getRequest().getId());
+		return lineItem;
 	}
 
 	@PutMapping("/{id}")
 	public void update(@PathVariable int id, @RequestBody LineItem lineitem) {
 		if (id != lineitem.getId()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error, id in path and body do not match");
-		}
-		else if (lineItemRepo.existsById(id)) {
+		} else if (lineItemRepo.existsById(id)) {
 			int reqId = lineItemRepo.findById(id).get().getRequest().getId();
 			lineItemRepo.save(lineitem);
 			recalculateLineItemTotal(reqId);
@@ -54,6 +57,7 @@ public class LineItemController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error, no lineitem for id " + id);
 		}
 	}
+
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable int id) {
 		if (lineItemRepo.existsById(id)) {
@@ -64,11 +68,12 @@ public class LineItemController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error, no lineitem for id " + id);
 		}
 	}
-	@GetMapping("/lines-for-req/{id}") 
+
+	@GetMapping("/lines-for-req/{id}")
 	public List<LineItem> getLinesForRequest(@PathVariable int id) {
 		return lineItemRepo.findByRequestId(id);
 	}
-	
+
 	private void recalculateLineItemTotal(int requestId) {
 		List<LineItem> li = lineItemRepo.findByRequestId(requestId);
 		Request request = requestRepo.findById(requestId).get();

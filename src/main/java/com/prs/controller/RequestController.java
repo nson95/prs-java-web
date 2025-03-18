@@ -44,13 +44,6 @@ public class RequestController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error no requests found for id " + id);
 		}
 	}
-
-//	@PostMapping("")
-//	public Request add(@RequestBody Request request) {
-//		request.setRequestNumber(getRequestNumber());
-//		request.setSubmittedDate(LocalDateTime.now());
-//		return requestRepo.save(request);
-//	}
 	
 	@PostMapping("")
 	public Request add(@RequestBody RequestDTO requestDTO) {
@@ -89,11 +82,10 @@ public class RequestController {
 	}
 
 	@PutMapping("/reject/{id}")
-	public Request reject(@PathVariable int id, @RequestBody Request request) {
+	public Request reject(@PathVariable int id, @RequestBody String reasonForRejection) {
 		Request r = requestRepo.findById(id).get();
-		if (id != r.getId()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error, id input mismatch per URL id " + id);
-		} else if (requestRepo.existsById(id)) {
+		if (requestRepo.existsById(id)) {
+			r.setReasonForRejection(reasonForRejection);
 			r.setStatus("REJECTED");
 			requestRepo.save(r);
 			return r;
